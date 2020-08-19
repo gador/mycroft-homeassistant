@@ -351,7 +351,7 @@ class HomeAssistantSkill(FallbackSkill):
         self.speak_dialog("homeassistant.shopping.list")
         return
 
-    def handle_light_adjust_intent(self, message):
+    def _handle_light_adjust(self, message):
         entity = message.data["Entity"]
         action = message.data["Action"]
         brightness_req = 10.0
@@ -484,7 +484,7 @@ class HomeAssistantSkill(FallbackSkill):
             if len(quantity) > 0:
                 quantity = quantity[0]
                 if (quantity.unit.name != "dimensionless" and
-                        quantity.uncertainty <= 0.5):
+                        (quantity.uncertainty is None or quantity.uncertainty <= 0.5)):
                     sensor_unit = quantity.unit.name
                     sensor_state = quantity.value
 
